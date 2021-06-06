@@ -26,7 +26,7 @@ struct SearchForItemResultsData: Codable{
             paging.append(PagingStruct(json: allPaging))
         }
         
-        if let allResults = json["results"] as? [Dictionary<String, AnyObject>],
+        if let allResults = json["results"] as? [Any],
            !allResults.isEmpty{
             results.append(ResultsStruct(json: allResults))
         }
@@ -55,7 +55,7 @@ struct PagingStruct: Codable{
 struct ResultsStruct: Codable{
     var result = [ResultStruct]()
     
-    init(json: [Dictionary<String, AnyObject>]) {
+    init(json: [Any]) {
         for aResult in json {
             if let aResultDict = aResult as? Dictionary<String, AnyObject> {
                 result.append(ResultStruct(json: aResultDict))
@@ -163,13 +163,13 @@ class SearchForItemResultsDelegate: NSObject, UITableViewDelegate{
 
 class SearchForItemResultsDataSource: NSObject, UITableViewDataSource{
     
-    private var itemResults: [SearchForItemResultsData]?
-    func setItemResults(itemResults: [SearchForItemResultsData]){
-        self.itemResults = itemResults
+    private var result: [ResultStruct]?
+    func setItemResults(result: [ResultStruct]){
+        self.result = result
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let count = itemResults?.count else {
+        guard let count = result?.count else {
             return 0
         }
         return count
@@ -177,12 +177,27 @@ class SearchForItemResultsDataSource: NSObject, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let itemResults = itemResults else  {
+        guard let result = result else  {
             return UITableViewCell()
         }
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "searchForItemResultsTableViewCell", for: indexPath) as! SearchForItemResultsTableViewCell
-        cell.labelItem.text = itemResults[indexPath.row].site_id?.uppercased()
+        let cell = tableView.dequeueReusableCell(withIdentifier: "resultsTableViewCell", for: indexPath) as! SearchForItemResultsTableViewCell
+        print(result[indexPath.row].title)
+        cell.labelItem.text = result[indexPath.row].title
+        
+        do {
+            if let http = URL(string: result[indexPath.row].thumbnail),
+               var comps = URLComponents(url: http, resolvingAgainstBaseURL: false) {
+                comps.scheme = "https"
+                let https = comps.url!
+                let data = try Data(contentsOf: https)
+                cell.imageItem.image = UIImage(data: data)
+            }
+        }
+        catch{
+            print(error)
+        }
+        
         return cell
     }
 }
@@ -199,21 +214,22 @@ class ItemResultsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //tableView.dataSource = dataSource
-        //tableView.delegate = delegate
+        tableView.dataSource = dataSource
+        tableView.delegate = delegate
         setUpDelegates()
         tableView.reloadData()
     }
     
     func setUpDelegates(){
-        
-        
         guard let itemResults = itemResults else{
             getResults()
             return
         }
         self.tableView.isHidden = false
-        self.dataSource.setItemResults(itemResults: itemResults)
+        if let resultArray = itemResults.first?.results.first?.result {
+            self.dataSource.setItemResults(result: resultArray)
+        }
+        
         self.delegate.setItemResults(itemResults: itemResults)
     }
     
