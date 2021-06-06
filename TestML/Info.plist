@@ -62,5 +62,11 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>BaseURL</key>
+	<string>https://api.mercadolibre.com/</string>
+	<key>SitesURLParam</key>
+	<string>sites/</string>
+	<key>ProductSearchURL</key>
+	<string>MLA/search</string>
 </dict>
 </plist>
