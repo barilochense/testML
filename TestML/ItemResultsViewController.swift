@@ -66,97 +66,104 @@ struct ResultsStruct: Codable{
 
 struct ResultStruct: Codable{
     var id: String
-    var siteID: String
+    var site_id: String
     var title: String
     //var seller = [SellerStruct]()
     var price: Double?
     //var prices = [PricesStruct]()
-    var salePrice: String?
-    var currencyID: String
-    var availableQuantity: Int?
-    var soldQuantity: Int?
-    var buyingMode: String
-    var listingTypeID: String
-    var stopTime: String
+    var sale_price: String?
+    var currency_id: String
+    var available_quantity: Int?
+    var sold_quantity: Int?
+    var buying_mode: String
+    var listing_type_id: String
+    var stop_time: String
     var condition: String
     var permalink: String
     var thumbnail: String
-    var thumbnailID: String
-    var acceptsMercadopago: Bool
+    var thumbnail_id: String
+    var accepts_mercadopago: Bool
     //var installments = [Installments]()
     //var address = [Address]()
     //var shipping = [Shipping]()
-    //var sellerAddress = [SellerAddress]()
+    //var seller_address = [SellerAddress]()
     //var attributes = [Attribute]
-    var originalPrice: Double?
-    var categoryID: String?
-    var officialStoreID: Int?
-    var domainID: String
-    var catalogProductID: String
+    var original_price: Double?
+    var category_id: String?
+    var official_store_id: Int?
+    var domain_id: String
+    var catalog_product_id: String
     //var tags = [ResultTag]()
-    var catalogListing: Bool?
-    var useThumbnailID: Bool
-    var orderBackend: Int?
-    //var differentialPricing = [DifferentialPricing]
+    var catalog_listing: Bool?
+    var use_thumbnail_id: Bool
+    var order_backend: Int?
+    //var differential_pricing = [DifferentialPricing]
     
     init(json: Dictionary<String, AnyObject?>) {
         self.id = json["id"] as? String ?? ""
-        self.siteID = json["siteID"] as? String ?? ""
+        self.site_id = json["site_id"] as? String ?? ""
         self.title = json["title"] as? String ?? ""
         self.price = json["price"] as? Double
-        self.salePrice = json["salePrice"] as? String ?? ""
-        self.currencyID = json["currencyID"] as? String ?? ""
-        self.availableQuantity = json["availableQuantity"] as? Int
-        self.soldQuantity = json["soldQuantity"] as? Int
-        self.buyingMode = json["buyingMode"] as? String ?? ""
-        self.listingTypeID = json["listingTypeID"] as? String ?? ""
-        self.stopTime = json["stopTime"] as? String ?? ""
+        self.sale_price = json["sale_price"] as? String ?? ""
+        self.currency_id = json["currency_id"] as? String ?? ""
+        self.available_quantity = json["available_quantity"] as? Int
+        self.sold_quantity = json["sold_quantity"] as? Int
+        self.buying_mode = json["buying_mode"] as? String ?? ""
+        self.listing_type_id = json["listing_type_id"] as? String ?? ""
+        self.stop_time = json["stop_time"] as? String ?? ""
         self.condition = json["condition"] as? String ?? ""
         self.permalink = json["permalink"] as? String ?? ""
         self.thumbnail = json["thumbnail"] as? String ?? ""
-        self.thumbnailID = json["thumbnailID"] as? String ?? ""
-        self.acceptsMercadopago = json["acceptsMercadopago"] as? Bool ?? false
-        self.originalPrice = json["originalPrice"] as? Double
-        self.categoryID = json["categoryID"] as? String ?? ""
-        self.officialStoreID = json["officialStoreID"] as? Int
-        self.domainID = json["domainID"] as? String ?? ""
-        self.catalogProductID = json["catalogProductID"] as? String ?? ""
-        self.catalogListing = json["catalogListing"] as? Bool ?? false
-        self.useThumbnailID = json["useThumbnailID"] as? Bool ?? false
-        self.orderBackend = json["orderBackend"] as? Int
+        self.thumbnail_id = json["thumbnail_id"] as? String ?? ""
+        self.accepts_mercadopago = json["accepts_mercadopago"] as? Bool ?? false
+        self.original_price = json["original_price"] as? Double
+        self.category_id = json["category_id"] as? String ?? ""
+        self.official_store_id = json["official_store_id"] as? Int
+        self.domain_id = json["domain_id"] as? String ?? ""
+        self.catalog_product_id = json["catalog_product_id"] as? String ?? ""
+        self.catalog_listing = json["catalog_listing"] as? Bool ?? false
+        self.use_thumbnail_id = json["use_thumbnail_id"] as? Bool ?? false
+        self.order_backend = json["order_backend"] as? Int
     }
 }
 
 
-class SearchForItemResultsDelegate: NSObject, UITableViewDelegate{
-    private var itemResults: [SearchForItemResultsData]?
+class SearchForItemResultsDelegate: NSObject, UITableViewDelegate {
+    private var result: [ResultStruct]?
     
-    func setItemResults(itemResults: [SearchForItemResultsData]){
-        self.itemResults = itemResults
+    func setResult(result: [ResultStruct]){
+        self.result = result
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        guard let searchForItemResultsData = itemResults?[indexPath.row] else{
+        guard let result = result?[indexPath.row] else{
             return
-        }/*
-        if let listProductVC = UIStoryboard(name: "Search", bundle: nil).instantiateViewController(withIdentifier: "listProductVC") as? ListProductViewController,
-           let path = searchForItemResultsData.link {
-            listProductVC.performSearchFromTitleHomeLink(path: "/busca?"+path)*/
-            /*
-            //MARK:- Search query from title homolinkeable
-            func performSearchFromTitleHomeLink(path : String) {
-                self.queryToSearch = path
-                self.isFromCarrousel = true
-                UIViewController.returnPresentedViewController().navigationController?.pushViewController(self, animated: true)
+        }
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ProductDetailVC") as! ProductDetailViewController
+        
+        
+        guard let rootViewController : UIViewController = UIApplication.shared.keyWindow?.rootViewController else {
+            fatalError("there is no view controller presented on screen.")
+        }
+        
+        var presentedVc = rootViewController.presentedViewController
+        
+        if let navController = rootViewController as? UINavigationController,
+            let lastVC = navController.viewControllers.last{
+            if let presentedViewController = lastVC.presentedViewController  {
+                presentedVc = presentedViewController
+            } else {
+                presentedVc = lastVC
             }
-            
-            //listProductVC.title = searchForItemResultsData.name
-        }*/
+        }
+        vc.result = result
+        
+        presentedVc?.navigationController?.pushViewController(vc, animated: true)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 55
+        return 100
     }
     
 }
@@ -164,7 +171,7 @@ class SearchForItemResultsDelegate: NSObject, UITableViewDelegate{
 class SearchForItemResultsDataSource: NSObject, UITableViewDataSource{
     
     private var result: [ResultStruct]?
-    func setItemResults(result: [ResultStruct]){
+    func setResult(result: [ResultStruct]){
         self.result = result
     }
 
@@ -182,9 +189,8 @@ class SearchForItemResultsDataSource: NSObject, UITableViewDataSource{
         }
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "resultsTableViewCell", for: indexPath) as! SearchForItemResultsTableViewCell
-        print(result[indexPath.row].title)
         cell.labelItem.text = result[indexPath.row].title
-        
+        cell.priceItem.text = "$ " + (result[indexPath.row].price?.description ?? "")
         do {
             if let http = URL(string: result[indexPath.row].thumbnail),
                var comps = URLComponents(url: http, resolvingAgainstBaseURL: false) {
@@ -227,13 +233,13 @@ class ItemResultsViewController: UIViewController {
         }
         self.tableView.isHidden = false
         if let resultArray = itemResults.first?.results.first?.result {
-            self.dataSource.setItemResults(result: resultArray)
+            self.dataSource.setResult(result: resultArray)
+            self.delegate.setResult(result: resultArray)
         }
-        
-        self.delegate.setItemResults(itemResults: itemResults)
     }
     
     func getResults() {
+        tableView.isHidden = true
         activityIndicator.startAnimating()
         searchForItem(finishedBlock: { [weak self] (finished, itemResults) in
             guard let itemResults = itemResults,

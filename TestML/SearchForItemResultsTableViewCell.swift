@@ -12,6 +12,7 @@ class SearchForItemResultsTableViewCell: UITableViewCell {
     
     @IBOutlet weak var imageItem: UIImageView!
     @IBOutlet weak var labelItem: UILabel!
+    @IBOutlet weak var priceItem: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
