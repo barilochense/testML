@@ -26,8 +26,8 @@ enum SearchForItemResultsRouter: URLRequestConvertible {
             let offset = defaults.object(forKey: "offset") as? String
             let product = defaults.object(forKey: "product") as? String
             urlComponents.queryItems = [
-                URLQueryItem(name: "q", value: product)//,
-                //URLQueryItem(name: "offset", value: offset)
+                URLQueryItem(name: "q", value: product),
+                URLQueryItem(name: "offset", value: offset)
             ]
             return urlComponents.url!
         }

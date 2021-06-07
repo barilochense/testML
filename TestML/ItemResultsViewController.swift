@@ -130,9 +130,14 @@ struct ResultStruct: Codable{
 
 class SearchForItemResultsDelegate: NSObject, UITableViewDelegate {
     private var result: [ResultStruct]?
+    private var paging: PagingStruct?
     
     func setResult(result: [ResultStruct]){
         self.result = result
+    }
+    
+    func setPaging(paging: PagingStruct){
+        self.paging = paging
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -164,6 +169,36 @@ class SearchForItemResultsDelegate: NSObject, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let lastElement = result?.count else {
+            return
+        }
+        if indexPath.row == (lastElement - 1) {
+            if let offset = paging?.offset,
+               let total = paging?.total,
+               let limit = paging?.limit,
+               offset < total {
+                let defaults = UserDefaults.standard
+                let newOffset = offset + limit
+                defaults.set(newOffset.description, forKey: "offset")
+                /*
+                let api : SearchForItemResultsType = SearchForItemResultsManager()
+                api.getSearchForItemResults(finishedBlock: <#T##(([SearchForItemResultsData]) -> Void)##(([SearchForItemResultsData]) -> Void)##([SearchForItemResultsData]) -> Void#>)
+                api.getSearchForItemResults { (offers) in
+                    if offers.isEmpty {
+                        finishedBlock(false, nil)
+                        let alert = UIAlertController(title: "Atención", message: "Esta búsqueda no tuvo resultados. Por favor, vuelva a buscar otro producto", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in `self`.navigationController?.popViewController(animated: true) })
+                        `self`.present(alert, animated: true, completion: nil)
+                        return
+                    }
+                    finishedBlock(true, offers)
+                }*/
+                //api.getSearchForItemResults(finishedBlock: <#T##(([SearchForItemResultsData]) -> Void)##(([SearchForItemResultsData]) -> Void)##([SearchForItemResultsData]) -> Void#>)
+            }
+        }
     }
 }
 
@@ -212,30 +247,7 @@ class SearchForItemResultsDataSource: NSObject, UITableViewDataSource{
         return cell
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        guard let lastElement = result?.count else {
-            return
-        }
-        if indexPath.row == lastElement {
-            //  Check which offset should be sent on the URL
-            let totalPages = (paging?.total)! / (paging?.limit)!
-            let offset = paging?.offset
-            if offset! < totalPages {
-                let defaults = UserDefaults.standard
-                var newOffset = offset! + 1
-                defaults.set(newOffset.description, forKey: "offset")
-                let api : SearchForItemResultsType = SearchForItemResultsManager()
-                //api.getSearchForItemResults(finishedBlock: <#T##(([SearchForItemResultsData]) -> Void)##(([SearchForItemResultsData]) -> Void)##([SearchForItemResultsData]) -> Void#>)
-            }
-            
-            
-            // Make call to get more data
-            
-            // Check for going up
-            
-            
-        }
-    }
+    
 }
 
 
@@ -251,10 +263,17 @@ class ItemResultsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setInitialOffset()
         tableView.dataSource = dataSource
         tableView.delegate = delegate
         setUpDelegates()
         tableView.reloadData()
+    }
+    
+    func setInitialOffset() {
+        let defaults = UserDefaults.standard
+        let newOffset = 0
+        defaults.set(newOffset.description, forKey: "offset")
     }
     
     func setUpDelegates(){
@@ -269,6 +288,7 @@ class ItemResultsViewController: UIViewController {
         }
         if let pagingResult = itemResults.first?.paging.first {
             self.dataSource.setPaging(paging: pagingResult)
+            self.delegate.setPaging(paging: pagingResult)
         }
     }
     
