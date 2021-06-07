@@ -165,14 +165,19 @@ class SearchForItemResultsDelegate: NSObject, UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
-    
 }
 
 class SearchForItemResultsDataSource: NSObject, UITableViewDataSource{
     
     private var result: [ResultStruct]?
+    private var paging: PagingStruct?
+    
     func setResult(result: [ResultStruct]){
         self.result = result
+    }
+    
+    func setPaging(paging: PagingStruct){
+        self.paging = paging
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -206,11 +211,37 @@ class SearchForItemResultsDataSource: NSObject, UITableViewDataSource{
         
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let lastElement = result?.count else {
+            return
+        }
+        if indexPath.row == lastElement {
+            //  Check which offset should be sent on the URL
+            let totalPages = (paging?.total)! / (paging?.limit)!
+            let offset = paging?.offset
+            if offset! < totalPages {
+                let defaults = UserDefaults.standard
+                var newOffset = offset! + 1
+                defaults.set(newOffset.description, forKey: "offset")
+                let api : SearchForItemResultsType = SearchForItemResultsManager()
+                //api.getSearchForItemResults(finishedBlock: <#T##(([SearchForItemResultsData]) -> Void)##(([SearchForItemResultsData]) -> Void)##([SearchForItemResultsData]) -> Void#>)
+            }
+            
+            
+            // Make call to get more data
+            
+            // Check for going up
+            
+            
+        }
+    }
 }
 
 
 class ItemResultsViewController: UIViewController {
     var itemResults: [SearchForItemResultsData]?
+    var paging: PagingStruct?
     var dataSource: SearchForItemResultsDataSource = SearchForItemResultsDataSource()
     var delegate: SearchForItemResultsDelegate = SearchForItemResultsDelegate()
     
@@ -235,6 +266,9 @@ class ItemResultsViewController: UIViewController {
         if let resultArray = itemResults.first?.results.first?.result {
             self.dataSource.setResult(result: resultArray)
             self.delegate.setResult(result: resultArray)
+        }
+        if let pagingResult = itemResults.first?.paging.first {
+            self.dataSource.setPaging(paging: pagingResult)
         }
     }
     

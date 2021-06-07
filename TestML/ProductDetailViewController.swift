@@ -13,22 +13,7 @@ class ProductDetailViewController: UIViewController {
     @IBOutlet weak var price: UILabel!
     
     var result: ResultStruct?
-    /*
-    var dataSourceProduct: ProductCollectionViewSource?
     
-    var updater : UpdaterResultsSearchBar = UpdaterResultsSearchBar()
-    
-    //for search
-    var productsReceivedFromSearch: [ProductStruct]?
-    var queryToSearch: String?
-    var categoryPath: [String]?
-    var isFromCarrousel : Bool = false
-    
-    ///Object for paging. "initialValue" CANNOT BE less than or equals 0
-    var pageRange: PageRange = PageRange(initialValue: 0, sumRange: 15, limit: 15)
-    var pageRangeVotic: PageRangeVotic = PageRangeVotic(initialPage: 0, sumPage: 1, limitPages: 1)
-    var presentedProducts: [ProductStruct] = [ProductStruct]()
-    */
     override func viewDidLoad() {
         super.viewDidLoad()
         

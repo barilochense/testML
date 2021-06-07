@@ -22,8 +22,12 @@ enum SearchForItemResultsRouter: URLRequestConvertible {
         switch self {
         case .getItemResults:
             var urlComponents = URLComponents(string: Constants.Config.BaseURL + Constants.Config.SitesURLParam + Constants.Config.ProductSearchURL)!
+            let defaults = UserDefaults.standard
+            let offset = defaults.object(forKey: "offset") as? String
+            let product = defaults.object(forKey: "product") as? String
             urlComponents.queryItems = [
-                URLQueryItem(name: "q", value: "Motorola G6")
+                URLQueryItem(name: "q", value: product)//,
+                //URLQueryItem(name: "offset", value: offset)
             ]
             return urlComponents.url!
         }
@@ -44,7 +48,7 @@ enum SearchForItemResultsRouter: URLRequestConvertible {
         url = path
         urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = method.rawValue
-        print(urlRequest.url?.description)
+        print(urlRequest.url?.description as Any)
         urlRequest.allHTTPHeaderFields = headers.dictionary
         return urlRequest
     }
