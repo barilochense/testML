@@ -26,7 +26,7 @@ struct SearchForItemResultsData: Codable{
             paging.append(PagingStruct(json: allPaging))
         }
         
-        if let allResults = json["results"] as? [Any],
+        if var allResults = json["results"] as? [Any],
            !allResults.isEmpty{
             results.append(ResultsStruct(json: allResults))
         }
@@ -57,7 +57,7 @@ struct ResultsStruct: Codable{
     
     init(json: [Any]) {
         for aResult in json {
-            if let aResultDict = aResult as? Dictionary<String, AnyObject> {
+            if var aResultDict = aResult as? Dictionary<String, AnyObject> {
                 result.append(ResultStruct(json: aResultDict))
             }
         }
@@ -127,81 +127,6 @@ struct ResultStruct: Codable{
     }
 }
 
-
-class SearchForItemResultsDelegate: NSObject, UITableViewDelegate {
-    private var result: [ResultStruct]?
-    private var paging: PagingStruct?
-    
-    func setResult(result: [ResultStruct]){
-        self.result = result
-    }
-    
-    func setPaging(paging: PagingStruct){
-        self.paging = paging
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        guard let result = result?[indexPath.row] else{
-            return
-        }
-        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ProductDetailVC") as! ProductDetailViewController
-        
-        
-        guard let rootViewController : UIViewController = UIApplication.shared.keyWindow?.rootViewController else {
-            fatalError("there is no view controller presented on screen.")
-        }
-        
-        var presentedVc = rootViewController.presentedViewController
-        
-        if let navController = rootViewController as? UINavigationController,
-            let lastVC = navController.viewControllers.last{
-            if let presentedViewController = lastVC.presentedViewController  {
-                presentedVc = presentedViewController
-            } else {
-                presentedVc = lastVC
-            }
-        }
-        vc.result = result
-        
-        presentedVc?.navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
-    }
-    
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        guard let lastElement = result?.count else {
-            return
-        }
-        if indexPath.row == (lastElement - 1) {
-            if let offset = paging?.offset,
-               let total = paging?.total,
-               let limit = paging?.limit,
-               offset < total {
-                let defaults = UserDefaults.standard
-                let newOffset = offset + limit
-                defaults.set(newOffset.description, forKey: "offset")
-                /*
-                let api : SearchForItemResultsType = SearchForItemResultsManager()
-                api.getSearchForItemResults(finishedBlock: <#T##(([SearchForItemResultsData]) -> Void)##(([SearchForItemResultsData]) -> Void)##([SearchForItemResultsData]) -> Void#>)
-                api.getSearchForItemResults { (offers) in
-                    if offers.isEmpty {
-                        finishedBlock(false, nil)
-                        let alert = UIAlertController(title: "Atención", message: "Esta búsqueda no tuvo resultados. Por favor, vuelva a buscar otro producto", preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in `self`.navigationController?.popViewController(animated: true) })
-                        `self`.present(alert, animated: true, completion: nil)
-                        return
-                    }
-                    finishedBlock(true, offers)
-                }*/
-                //api.getSearchForItemResults(finishedBlock: <#T##(([SearchForItemResultsData]) -> Void)##(([SearchForItemResultsData]) -> Void)##([SearchForItemResultsData]) -> Void#>)
-            }
-        }
-    }
-}
-
 class SearchForItemResultsDataSource: NSObject, UITableViewDataSource{
     
     private var result: [ResultStruct]?
@@ -265,6 +190,7 @@ class ItemResultsViewController: UIViewController {
         super.viewDidLoad()
         setInitialOffset()
         tableView.dataSource = dataSource
+        delegate.searchforItemResultsDelegateProtocol = self
         tableView.delegate = delegate
         setUpDelegates()
         tableView.reloadData()
@@ -316,7 +242,14 @@ class ItemResultsViewController: UIViewController {
                     alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in self.navigationController?.popViewController(animated: true) })
                     self.present(alert, animated: true, completion: nil)
                 } else {
-                    `self`.itemResults = itemResults
+                    if itemResults.first?.paging.first?.offset == 0 {
+                        `self`.itemResults = itemResults
+                    } else {
+                        /*
+                        if let newResults = itemResults.first?.results.first?.result {
+                            `self`.itemResults?.first?.results.first?.result.f: newResults)
+                        }*/
+                    }
                     `self`.setUpDelegates()
                     `self`.tableView.reloadData()
                     `self`.activityIndicator.stopAnimating()
@@ -340,3 +273,12 @@ class ItemResultsViewController: UIViewController {
     }
 }
 
+extension ItemResultsViewController : SearchForItemResultsDelegateProtocol {
+    func loadMoreData(offset: Int, total: Int, limit: Int) {
+        let defaults = UserDefaults.standard
+        let newOffset = offset + limit
+        defaults.set(newOffset.description, forKey: "offset")
+        
+        getResults()
+    }
+}
