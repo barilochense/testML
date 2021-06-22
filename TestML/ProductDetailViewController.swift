@@ -12,7 +12,7 @@ class ProductDetailViewController: UIViewController {
     @IBOutlet weak var productImage: UIImageView!
     @IBOutlet weak var price: UILabel!
     
-    var result: ResultStruct?
+    var result: Results?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +23,7 @@ class ProductDetailViewController: UIViewController {
         }
         productName.text = currentResult.title
         price.text = "$ " + (currentResult.price?.description ?? "")
+        
         do {
             if let thmb_id = result?.thumbnail_id {
                 if let url = URL(string: "https://http2.mlstatic.com/D_NQ_NP_" + thmb_id + "-F.jpg") {
