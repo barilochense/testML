@@ -10,7 +10,7 @@ import UIKit
 class SearchForItemResultsTableViewCell: UITableViewCell {
 
     
-    @IBOutlet weak var imageItem: UIImageView!
+    @IBOutlet weak var imageItem: UIImageViewFromURL!
     @IBOutlet weak var labelItem: UILabel!
     @IBOutlet weak var priceItem: UILabel!
     

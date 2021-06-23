@@ -38,19 +38,12 @@ class ItemResultsViewController: UIViewController, UITableViewDelegate, UITableV
         
         cell.labelItem.text = result.title
         cell.priceItem.text = "$ " + (result.price?.description ?? "")
-        do {
-            
-            if let thumbnail_id = result.thumbnail_id,
-               let http = URL(string: "https://http2.mlstatic.com/D_NQ_NP_" + thumbnail_id + "-R.jpg"),
-               var comps = URLComponents(url: http, resolvingAgainstBaseURL: false) {
-                comps.scheme = "https"
-                let https = comps.url!
-                let data = try Data(contentsOf: https)
-                cell.imageItem.image = UIImage(data: data)
-            }
-        }
-        catch{
-            print(error)
+        if let thumbnail_id = result.thumbnail_id {
+            let url = "https://http2.mlstatic.com/D_NQ_NP_" + thumbnail_id + "-R.jpg"
+            print(url)
+            cell.imageItem.imageURL = url
+            cell.imageItem.image = nil
+            cell.imageItem.load(urlString: url)
         }
         return cell
     }

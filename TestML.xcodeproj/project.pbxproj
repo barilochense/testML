@@ -16,6 +16,7 @@
 		C31C0C232664429F0043FE66 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C31C0C212664429F0043FE66 /* LaunchScreen.storyboard */; };
 		C31C0C2E2664429F0043FE66 /* TestMLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31C0C2D2664429F0043FE66 /* TestMLTests.swift */; };
 		C31C0C392664429F0043FE66 /* TestMLUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31C0C382664429F0043FE66 /* TestMLUITests.swift */; };
+		C31C30272682D4DA00FFE1A2 /* UIImageViewFromURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31C30262682D4DA00FFE1A2 /* UIImageViewFromURL.swift */; };
 		C38A3200266C03AB00B8BAE3 /* SearchForItemResultsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38A31FF266C03AB00B8BAE3 /* SearchForItemResultsTableViewCell.swift */; };
 		C396AF3C266D7142004AC98A /* ProductDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C396AF3B266D7142004AC98A /* ProductDetailViewController.swift */; };
 		C3B724E42667978F00943680 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B724E32667978F00943680 /* Constants.swift */; };
@@ -55,6 +56,7 @@
 		C31C0C342664429F0043FE66 /* TestMLUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestMLUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C31C0C382664429F0043FE66 /* TestMLUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMLUITests.swift; sourceTree = "<group>"; };
 		C31C0C3A2664429F0043FE66 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C31C30262682D4DA00FFE1A2 /* UIImageViewFromURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageViewFromURL.swift; sourceTree = "<group>"; };
 		C38A31FF266C03AB00B8BAE3 /* SearchForItemResultsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchForItemResultsTableViewCell.swift; sourceTree = "<group>"; };
 		C396AF3B266D7142004AC98A /* ProductDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewController.swift; sourceTree = "<group>"; };
 		C3B724E32667978F00943680 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 				C309D0E32680F0FF005578BE /* SearchResults.swift */,
 				C396AF3B266D7142004AC98A /* ProductDetailViewController.swift */,
 				C3B724E826679A5F00943680 /* ItemResultsViewController.swift */,
+				C31C30262682D4DA00FFE1A2 /* UIImageViewFromURL.swift */,
 				C38A31FF266C03AB00B8BAE3 /* SearchForItemResultsTableViewCell.swift */,
 				C31C0C1C2664429E0043FE66 /* Main.storyboard */,
 				C31C0C1F2664429F0043FE66 /* Assets.xcassets */,
@@ -286,6 +289,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C31C30272682D4DA00FFE1A2 /* UIImageViewFromURL.swift in Sources */,
 				C309D0E42680F0FF005578BE /* SearchResults.swift in Sources */,
 				C31C0C1B2664429E0043FE66 /* ViewController.swift in Sources */,
 				C396AF3C266D7142004AC98A /* ProductDetailViewController.swift in Sources */,

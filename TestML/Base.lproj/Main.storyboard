@@ -74,8 +74,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZZb-ZQ-qgV">
-                                                    <rect key="frame" x="0.0" y="0.0" width="112" height="100"/>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZZb-ZQ-qgV" customClass="UIImageViewFromURL" customModule="TestML" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="10" width="112" height="80"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="112" id="B6l-Yv-Jgs"/>
                                                     </constraints>
@@ -87,7 +87,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QPa-AH-NdF">
-                                                    <rect key="frame" x="262" y="78" width="152" height="17"/>
+                                                    <rect key="frame" x="212" y="78" width="202" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -96,12 +96,12 @@
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="QPa-AH-NdF" secondAttribute="trailing" id="Fba-oP-zj0"/>
                                                 <constraint firstAttribute="bottom" secondItem="QPa-AH-NdF" secondAttribute="bottom" multiplier="1.05" id="JpD-iP-0fr"/>
-                                                <constraint firstItem="ZZb-ZQ-qgV" firstAttribute="top" secondItem="TTI-Fo-hsL" secondAttribute="top" id="MSf-Wk-nIB"/>
-                                                <constraint firstAttribute="bottom" secondItem="ZZb-ZQ-qgV" secondAttribute="bottom" id="S44-IV-mtE"/>
+                                                <constraint firstItem="ZZb-ZQ-qgV" firstAttribute="centerY" secondItem="TTI-Fo-hsL" secondAttribute="centerY" id="SXm-Nv-uvB"/>
                                                 <constraint firstAttribute="trailing" secondItem="2N2-w1-SBn" secondAttribute="trailing" id="Sph-AL-KZQ"/>
                                                 <constraint firstItem="2N2-w1-SBn" firstAttribute="leading" secondItem="ZZb-ZQ-qgV" secondAttribute="trailing" constant="10" id="YQc-Iy-Awf"/>
+                                                <constraint firstItem="ZZb-ZQ-qgV" firstAttribute="height" secondItem="TTI-Fo-hsL" secondAttribute="height" multiplier="0.8" id="iAq-gQ-4rQ"/>
                                                 <constraint firstItem="2N2-w1-SBn" firstAttribute="top" secondItem="TTI-Fo-hsL" secondAttribute="top" id="owz-mV-yyI"/>
-                                                <constraint firstItem="QPa-AH-NdF" firstAttribute="leading" secondItem="ZZb-ZQ-qgV" secondAttribute="trailing" constant="150" id="saC-uE-jiH"/>
+                                                <constraint firstItem="QPa-AH-NdF" firstAttribute="leading" secondItem="ZZb-ZQ-qgV" secondAttribute="trailing" constant="100" id="saC-uE-jiH"/>
                                                 <constraint firstItem="ZZb-ZQ-qgV" firstAttribute="leading" secondItem="TTI-Fo-hsL" secondAttribute="leading" id="spR-4Q-RXJ"/>
                                             </constraints>
                                         </tableViewCellContentView>
