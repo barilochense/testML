@@ -20,36 +20,6 @@ class UIImageViewFromURL : UIImageView {
             return
         }
         
-        /*
-        do {
-            if let url = URL(string: urlString) {
-                let data = try Data(contentsOf: url)
-                if let image = UIImage(data: data) {
-                    imageCache.setObject(image, forKey: urlString as NSString)
-                    self.image = image
-                }
-            }
-        }
-        catch{
-            print(error)
-        }
-        */
-        /*
-        do {
-            if let thumbnail_id = result.thumbnail_id,
-               let http = URL(string: "https://http2.mlstatic.com/D_NQ_NP_" + thumbnail_id + "-R.jpg"),
-               var comps = URLComponents(url: http, resolvingAgainstBaseURL: false) {
-                comps.scheme = "https"
-                let https = comps.url!
-                let data = try Data(contentsOf: https)
-                cell.imageItem.image = UIImage(data: data)
-            }
-        }
-        catch{
-            print(error)
-        }
- */
-        
         guard let url = URL(string: urlString) else {
             return
         }

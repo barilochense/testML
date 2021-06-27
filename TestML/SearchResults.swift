@@ -61,7 +61,7 @@ struct Results: Decodable {
 //    let attributes: [Attributes]
     let original_price: Float?
     let category_id: String?
-    let official_store_id: String?
+    let official_store_id: Int?
     let domain_id: String?
     let catalog_product_id: String?
 //    let tags: [Tags]

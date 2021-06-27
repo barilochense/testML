@@ -93,6 +93,7 @@ class ItemResultsViewController: UIViewController, UITableViewDelegate, UITableV
         let url = getURL()
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
+        NSLog("%@%@", "Fetching data from: ", url.description)
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             if error == nil {
                 do {
